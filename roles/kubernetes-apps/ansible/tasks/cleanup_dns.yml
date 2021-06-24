@@ -2,6 +2,9 @@
 - name: Kubernetes Apps | Register coredns deployment annotation `createdby`
   shell: "{{ bin_dir }}/kubectl get deploy -n kube-system coredns -o jsonpath='{ .spec.template.metadata.annotations.createdby }'"
   register: createdby_annotation
+  until: createdby_annotation is not failed
+  retries: 5
+  delay: 3
   changed_when: false
   ignore_errors: true
   when:
